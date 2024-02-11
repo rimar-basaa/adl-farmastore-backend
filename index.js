@@ -3,10 +3,26 @@ const app = express();
 const { obtenerMedicamentos, obtenerMedicamentosFiltrados } = require('./consultas');
 
 
+const crearHATEOAS = (medicamentos) => {
+    const resultado = medicamentos.map((item) => {
+        return {
+            name: item.nombre,
+            href: `medicamentos/medicamento/${item.id}`
+        };
+    });
+    const total = medicamentos.length;
+    const HATEOAS = {
+        total,
+        resultado
+    };
+    return HATEOAS;
+};
+
 app.get('/medicamentos', async (req, res) => {
     const queryStrings = req.query;
     const medicamentos = await obtenerMedicamentos(queryStrings);
-    res.status(200).json(medicamentos);
+    const HATEOAS = crearHATEOAS(medicamentos);
+    res.status(200).json(HATEOAS);
 });
 
 app.get('/medicamentos/filtros', async (req, res) => {

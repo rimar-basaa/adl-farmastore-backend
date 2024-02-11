@@ -11,7 +11,7 @@ const pool = new Pool({
 });
 
 
-const obtenerMedicamentos = async ({ order_by = id_ASC, limits = 10, page = 1 }) => {
+const obtenerMedicamentos = async ({ order_by = 'id_ASC', limits = 10, page = 1 }) => {
     const [campo, direccion] = order_by.split("_");
     const offset = (page - 1) * limits;
     const consultaFormateada = format('SELECT * FROM medicamentos ORDER BY %s %s LIMIT %s OFFSET %s', campo, direccion, limits, offset);    
